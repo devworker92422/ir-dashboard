@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" />
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+{% endblock %}
+
+{% block content %}
+  <!--      <div class="input-group mb-3 w-50 mr-auto ml-2">
+  <input type="text" class="form-control" placeholder="Search URL" aria-label="Client Email" aria-describedby="filter"
+    id="url_input">
+  <div class="input-group-append">
+    <button class="btn custom-btn" type="button" id="search_btn">Search</button>
+  </div>e
+</div>      -->
+  
+  <div class="container-fluid">
+    <button class="btn-success" id="btn_add_modal">Add</button>
+    <table id="tbl_staff" class="table table-bordered table-stripe table-hover table-compact" style="width:100%">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Staff Email</th>
+          <th>Staff Name</th>
+          <th>Role</th>
+          <th>Region</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <!-- <div id="chart"></div> -->
+
+  <!--       <script>
+      let client_email = ""
+        {% if current_user.is_authenticated %}
+          client_email = "{{ current_user.email }}";
+        {% endif %}
+      const sdk = new ChartsEmbedSDK({
+        baseUrl: 'https://charts.mongodb.com/charts-dmcaapp-tjjmc',
+        filter:{ client_email },
+        showAttribution: true,
+        height:"80%",
+        autoRefresh:true,
+        maxDataAge:300,
+        widthMode:"scale",
+        width:"100%"
+      });
+      const chart = sdk.createChart({ chartId: '6405345f-e1ba-452f-85aa-3db4bc637978' }); 
+      chart.render(document.getElementById('chart')).then(()=>{
+        $("#search_btn").prop('disabled', false);
+        $("#url_input").prop('disabled', false);
+      })
+      
+      $("#search_btn").prop('disabled', true);
+      $("#url_input").prop('disabled', true);
+      $("#url_input").on("keypress", (e)=>{
+        if(e.keyCode == 13){
+          filter()
+        }
+      })
+      $("#search_btn").on("click",()=>{
+        filter()
+      })
+
+      function filter(){
+        let url_string = $("#url_input").val()
+        if(url_string){
+        chart.setFilter({ client_email, url:{ $regex: url_string, $options:"ig"} })          
+        }else{
+        chart.setFilter({ client_email})          
+        }
+      }
+    </script>      -->
+  <div class="modal" id="add_new_modal" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="padding: 20px;">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Staff</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <label >Staff Email</label>
+            <input class="form-control" type="text" id="email" required>
+          </div>
+          <div class="row">
+            <label >Staff Name</label>
+            <input class="form-control" type="text" id="name" required>
+          </div>
+          <div class="row">
+            <label >Role</label>
+            <select class="form-control" id="role">
+              <option value="0">None</option>
+              <option value="3">Staff</option>
+              <option value="2">Admin</option>
+              <option value="1">Super Admin</option>
+            </select>
+          </div>
+          <div class="row">
+            <label >Region</label>
+            <input class="form-control" type="text" id="region" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-success" id="btn_add">Add</button>
+          <button class="btn-danger" id="btn_cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script src="{{ url_for('static', filename = 'js/staffs.js') }}"></script>
+{% endblock %}

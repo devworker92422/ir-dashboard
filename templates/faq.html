@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block head %}
+  <link href="//cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet" />
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+  <div class="dashboard">
+    <h2 class="faq-header">FAQ</h2> 
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            <div class="card-body">
+                <h2>How do I contact you?</h2>
+                <p><strong>You can contact us anytime! </strong>Either:</p>
+                <ol>
+                    <li>Via: <a href="https://ir-dashboard.com/contact" target="_blank">https://ir-dashboard.com/contact</a>;</li>
+                    <li>Via team@internetremovals.com; or</li>
+                    <li>Via the WhatsApp link on the Contact Page.</li>
+                </ol>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h2>Is my information and data secure?</h2>
+                Yes, we prioritize the security and confidentiality of your information. We employ robust security measures to protect your data and comply with relevant privacy laws.
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h2>What do each of the fields mean?</h2>
+                <p>The chart contains the following fields: Date, Requester Email, Client Email, URL, Status, Google Status, Date Checked and Time Checked. An explanation of these fields is below:</p>
+                <p><strong>Date:</strong> The date we submitted the URL for removal.<br>
+                <strong>Requester Email:</strong> The Internet Removals personnel who made the removal application.<br>
+                <strong>Client Email:</strong> Your Email.<br>
+                <strong>URL:</strong> The URL we submitted for removal.<br>
+                <strong>Status:</strong> Whether the website/page is LIVE or Removed.<br>
+                <strong>Google Status:</strong> Whether the URL is found in Google or not.<br>
+                <strong>Date Checked:</strong> The date our team checked the status of the URL.<br>
+                <strong>Time Checked:</strong> The time our team checked the status of the URL.</p>
+            </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>Why aren't some of the URLs being removed from websites directly?</h2>
+                    <p><strong>That's a really great question! </strong>In fact, we have provided a detailed summary here: <a href="https://drive.google.com/file/d/1gqeF-kahxZLkYeFlC-xkD3QphsqTDQE0/view?usp=sharing" target="_blank">https://drive.google.com/file/d/1gqeF-kahxZLkYeFlC-xkD3QphsqTDQE0/view?usp=sharing</a></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>How do I submit URLs for your team to remove?</h2>
+                    <p><strong>You can follow these simple steps: </strong></p>
+                    <ol>
+                        <li>Visit: <a href="https://ir-dashboard.com/submit" target="_blank">https://ir-dashboard.com/submit</a></li>
+                        <li>Enter your email address.</li>
+                        <li>Enter each URL separated by a line, for example:</li>
+                    </ol>
+                    <p>https://ir-dashboard.com/<br>https://ir-dashboard.com/faq<br>https://ir-dashboard.com/contact</p>
+                    <p>Otherwise, you can email team@internetremovals.com</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>How does the dashboard/service work?</h2>
+                    Our dashboard/service utilises advanced algorithms and digital fingerprinting technology to identify and locate pirated, leaked, or stolen content across various platforms and websites.
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>What should I do if I find new instances of infringing content?</h2>
+                    You can easily report new instances of infringing content through the dashboard. Our team will review the reports and take appropriate action to remove them.
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>How often do my URLs get checked?</h2>
+                    Our team are actively working through over 500,000 URLs at any given time. Accordingly, we aim to check URL status at a minimum of 1 time each week; however, we are working on improving the cycle to 2-3 times per week.
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>Can you guarantee the complete removal of all infringing content?</h2>
+                    While we work diligently to remove as much infringing content as possible, complete removal cannot be guaranteed due to the decentralized nature of the internet. However, we have a high success rate in removing such content. In fact, we have over <strong>3.2 MILLION URL removals to date.</strong>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>What types of content can you remove?</h2>
+                    We specialise in removing pirated, leaked, or stolen images, videos, and other multimedia content from the internet.
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>How long does it take to remove the infringing content?</h2>
+                    The removal time depends on various factors such as the volume of content, platform policies, and cooperation from website administrators. In most cases, we strive to remove the content within 24-48 hours.
+                </div>
+            </div>
+        </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script src="{{ url_for('static', filename = 'js/faq.js') }}"></script>
+{% endblock %}

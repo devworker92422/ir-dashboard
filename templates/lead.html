@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" />
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+{% endblock %}
+
+{% block content %}
+  <!--      <div class="input-group mb-3 w-50 mr-auto ml-2">
+  <input type="text" class="form-control" placeholder="Search URL" aria-label="Client Email" aria-describedby="filter"
+    id="url_input">
+  <div class="input-group-append">
+    <button class="btn custom-btn" type="button" id="search_btn">Search</button>
+  </div>
+</div>      -->
+  <div class="container-fluid mb-2">
+    <div class="row">
+      <div class="col-xl-3 col-lg-6">
+        <div class="card card-stats mb-4 mb-xl-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Requests</h5>
+                <span class="h2 font-weight-bold mb-0">{{ requests }}</span>
+              </div>
+              <div class="col-auto">
+                <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                  <i class="fas fa-chart-bar"></i>
+                </div>
+              </div>
+            </div>
+           <!--
+            <p class="mt-3 mb-0 text-muted text-sm">
+              <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+              <span class="text-nowrap">Since last month</span>
+            </p>
+           --> 
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card card-stats mb-4 mb-xl-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">In Progress</h5>
+                <span class="h2 font-weight-bold mb-0">{{ progress }}</span>
+              </div>
+              <div class="col-auto">
+                <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                  <i class="fas fa-chart-pie"></i>
+                </div>
+              </div>
+            </div>
+            <!--<p class="mt-3 mb-0 text-muted text-sm">
+              <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>
+              <span class="text-nowrap">Since last week</span>
+            </p>-->
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card card-stats mb-4 mb-xl-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Completed</h5>
+                <span class="h2 font-weight-bold mb-0">{{ completed }}</span>
+              </div>
+              <div class="col-auto">
+                <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                  <i class="fas fa-percent"></i>
+                </div>
+              </div>
+            </div>
+           <!-- <p class="mt-3 mb-0 text-muted text-sm">
+              <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
+              <span class="text-nowrap">Since last month</span>
+            </p>-->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-6">
+        <div class="card card-stats mb-4 mb-xl-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Top Offenders</h5>
+                  <!-- <span class="h2 font-weight-bold mb-0">{{ canceled }}</span> -->
+              </div>
+              <div class="col-auto">
+                <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                  <i class="fas fa-users"></i>
+                </div>
+              </div>
+            </div>
+            <!--<p class="mt-3 mb-0 text-muted text-sm">
+              <span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
+              <span class="text-nowrap">Since yesterday</span>
+            </p>-->
+            {% for t in topoffenders %}
+              <p class="mt-3 mb-0 text-muted text-sm">
+              <span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> {{t.count}}</span>
+              <span class="text-nowrap">{{ t._id }}</span>
+              </p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <table id="example" class="table table-bordered table-stripe table-hover table-compact" style="width:100%">
+      <thead>
+        <tr>
+          
+          <th></th>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Review Score</th>
+          <th>Total Reviews</th> 
+          <th>Reviews</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <!-- <div id="chart"></div> -->
+
+  <!--       <script>
+      let client_email = ""
+        {% if current_user.is_authenticated %}
+          client_email = "{{ current_user.email }}";
+        {% endif %}
+      const sdk = new ChartsEmbedSDK({
+        baseUrl: 'https://charts.mongodb.com/charts-dmcaapp-tjjmc',
+        filter:{ client_email },
+        showAttribution: true,
+        height:"80%",
+        autoRefresh:true,
+        maxDataAge:300,
+        widthMode:"scale",
+        width:"100%"
+      });
+      const chart = sdk.createChart({ chartId: '6405345f-e1ba-452f-85aa-3db4bc637978' }); 
+      chart.render(document.getElementById('chart')).then(()=>{
+        $("#search_btn").prop('disabled', false);
+        $("#url_input").prop('disabled', false);
+      })
+      
+      $("#search_btn").prop('disabled', true);
+      $("#url_input").prop('disabled', true);
+      $("#url_input").on("keypress", (e)=>{
+        if(e.keyCode == 13){
+          filter()
+        }
+      })
+      $("#search_btn").on("click",()=>{
+        filter()
+      })
+
+      function filter(){
+        let url_string = $("#url_input").val()
+        if(url_string){
+        chart.setFilter({ client_email, url:{ $regex: url_string, $options:"ig"} })          
+        }else{
+        chart.setFilter({ client_email})          
+        }
+      }
+    </script>      -->
+{% endblock %}
+
+{% block js %}
+  <script src="{{ url_for('static', filename = 'js/lead.js') }}"></script>
+{% endblock %}

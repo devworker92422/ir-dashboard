@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" />
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+  <div class="dashboard-header">
+    <div class="stat">
+      <h1>{{ requests }}</h1>
+      <p>Requests</p>
+    </div>
+    <div class="stat">
+      <h1>{{ progress }}</h1>
+      <p>In Progress</p>
+    </div>
+    <div class="stat">
+      <h1>{{ completed }}</h1>
+      <p>Completed</p>
+    </div>
+  </div>
+  <div class="content-container">
+    <div class="top-infringers-container">
+      <div class="top-infringers-header">Monthly Link Status</div>
+      <ul class="top-infringers-list">
+          <li>Total Links Removed:<span>224 links</span></li>
+          <li>Total Links Submitted<span>198 links</span></li>
+      </ul>
+      <div class="chart-container">
+          <!-- <img src="C:\PYTHONPROGRAMS\DASHBOARD\templates\pie-chart.png" alt="Pie Chart" class="pie-chart"> -->
+      </div>
+    </div>
+    <div class="top-infringers-container">
+        <div class="top-infringers-header">Top Infringers</div>
+          <ul class="top-infringers-list">
+            {% for t in topoffenders %}
+                <li> {{t._id}} <span> {{t.count}} links</span></li>
+            {% endfor %}
+          </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="overflow-auto">
+        <table id="example" class="table table-bordered table-stripe table-hover table-compact bg-white" style="width:100%">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Requester Email</th>
+                <th>Client Name</th>
+                <th>Client Email</th>
+                <th>URL</th>
+                <th>Website Status</th>
+                <th>Google Status</th>
+                <th>Date Checked</th>
+                <th>Submission Count</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+  <script src="{{ url_for('static', filename = 'js/chart.js') }}"></script>
+{% endblock %}

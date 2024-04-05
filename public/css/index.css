@@ -1,0 +1,343 @@
+html, body {
+  /* height: 100%;  */
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #121642;
+  color: #fff;
+}
+.main-content {
+  display: flex;
+  flex: 1; /* Allows content to expand */
+  padding: 40px; /* Increased padding for spacing from sidebar and top */
+  justify-content: center;
+  align-items: center;
+}
+.logo-container {
+  text-align: center;
+  padding: 20px;
+  background-color: #12164200;
+  color: #162447;
+}
+.logo-container img {
+  max-width: 150px;
+}
+.sidebar {
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+}
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #ffbf00;
+  display: block;
+}
+.sidebar a:hover {
+  background-color: #f1f1f1;
+  color: #162447;
+}
+.menu-icon{
+  display: none;
+}
+.mobile-sidebar{
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  text-align: center;
+}
+.mobile-sidebar a{
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #ffbf00;
+  display: block;
+}
+.mobile-sidebar .closebtn{
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+.dashboard{
+  padding: 40px;
+  display: block;
+}
+.accordion .card {
+  background: #fff; /* White background */
+  padding: 20px;
+  margin: 20px auto; /* Center form container */
+  border-radius: 10px;
+  color: #333; /* Dark text color for visibility */
+  width: 89%; /* You can adjust this width as needed */
+  max-width: 900px; /* Maximum width */
+}
+.accordion .card-header {
+  background-color: #ffbf00;
+  color: #121642;
+}
+/* Style for the buttons (questions) */
+.accordion .btn {
+background-color: #162447; /* Inactive state color */
+color: #fff; /* Text color for the inactive state */
+font-weight: bold;
+text-align: left;
+width: 100%;
+border: none;
+padding: 0.75rem 1.25rem;
+border-radius: 0; /* Removes border-radius if you prefer flat design as per screenshot */
+transition: background-color 0.3s ease; /* Smooth transition for color change */
+font-size: 1.1em; /* Increased font size for questions */
+}
+
+/* Style for buttons when hovered or focused */
+.accordion .btn:hover, .accordion .btn:focus {
+      color: #fff; /* Text color for hover/focus state */
+      background-color: #ffbf00; /* Background color for hover/focus state */
+      text-decoration: none; /* Removes any underline from text */
+}
+
+/* Style for the currently active button */
+.accordion .btn.collapsed {
+  background-color: #ffbf00; /* Active state color */
+  color: #121642; /* Text color for the active state */
+}
+
+/* Additional style for the card header to remove the default box-shadow and border if needed */
+.accordion .card {
+  box-shadow: none;
+  border: none;
+}
+.accordion .card-body {
+  font-size: 0.9em; /* Decreased font size for answers */
+  padding: 15px; /* Added padding around text in answers */
+}
+
+.accordion .card-header {
+  background-color: #51ff00;
+  padding: 0; /* Removes padding if you want the button to be full-width */
+  border: none; /* Removes border if there is one */
+}
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  color: #333;
+}
+.form-container {
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+  padding: 50px;
+  margin: 20px auto; /* Center form container */
+  border-radius: 10px;
+  color: #fff;
+  width: 80%; /* You can adjust this width as needed */
+  max-width: 800px; /* Maximum width */
+}
+.form-container h2 {
+  color: #ffbf00;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+}
+.form-container input,
+.form-container textarea {
+  width: 100%; /* Full width minus padding */
+  padding: 10px;
+  margin:20px auto;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly opaque white for input backgrounds */
+}
+
+/* Button styling to ensure consistency */
+.form-container button {
+  width: auto; /* Auto width for buttons */
+  background-color: #ffbf00; /* Set the button background color */
+  color: #162447; /* Set the button text color */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+.form-container button:hover {
+  background-color: #e6ac00; /* A slightly darker shade for hover state */
+}
+.btn-submit {
+  background-color: #ffbf00;
+  color: #162447;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+.btn-submit:hover {
+  background-color: #e6ac00;
+}
+/* Footer Styles */
+.footer {
+  background-color: #121642;
+  /* padding-top: 20px; */
+  text-align: center;
+  flex-shrink: 0; /* Prevents the footer from shrinking */
+}
+.footer-content p {
+  margin: 5px 0; /* Adjusts the space between the lines */
+  color: #fff;
+}
+.footer-content a {
+  color: #ffbf00;
+  text-decoration: none;
+}
+.footer-content a:hover {
+  color: #e6ac00;
+}
+a {
+  color: #ffbf00; /* This sets the text color to #ffbf00 */
+  text-decoration: none; /* This removes the underline from links */
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 35px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.dashboard-header .stat {
+  text-align: center;
+}
+.dashboard-header .stat h1 {
+  color: #ffbf00;
+  margin: 0;
+}
+.dashboard-header .stat p {
+  color: #fff;
+}
+.stat-container {
+  margin-bottom: 20px;
+}
+.btn {
+  background-color: #ffbf00;
+  color: #161642;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+.btn:hover {
+  background-color: #e6ac00;
+}
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  color: #333;
+}
+
+a:hover {
+  color: #e6ac00; /* A slightly darker shade for the hover state if you want */
+}
+
+.infringers-board{
+  margin: 20px;
+}
+.infringers-element{
+  padding-top: 15px;
+}
+.top-infringers-container {
+  background: #fff; /* Assuming white background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+  padding:20px;
+}
+
+.top-infringers-header {
+  font-weight: bold;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.top-infringers-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px; /* Add some space before the chart */
+}
+
+.top-infringers-list li {
+  padding: 10px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.top-infringers-list li:last-child {
+  border-bottom: none;
+}
+
+.top-infringers-list li span {
+  float: right;
+}
+
+.content-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+.faq-header {
+  text-align: center;
+  color: #ffbf00; /* Optional: Change the color to match the theme */
+  margin-bottom: 20px; /* Add some space between the title and accordion */
+}
+.pieChart {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-image: conic-gradient(
+      pink 70deg,
+      lightblue 0 235deg,
+      orange 0
+  );
+}
+@media only screen and (max-width: 768px) {
+.sidebar {
+  display: none;
+}
+.menu-icon{
+  display: block;
+  font-size: 24px;
+  padding: 24px;
+}
+.form-container {
+  width: 100%; /* Make the form take the full width */
+  padding: 20px; /* Adjust padding */
+}
+.content-container, .dashboard-header, .top-infringers-container {
+  flex-direction: column; /* Stack elements vertically */
+}
+}
+

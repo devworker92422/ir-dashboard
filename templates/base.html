@@ -1,0 +1,103 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IR Client Portal</title>
+  <title>{% block title %} {% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+   integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" /> -->
+
+  <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.material.min.css" /> -->
+  <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" /> -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- 
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/4.0.0/material-components-web.min.css" /> -->
+  
+  <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" />
+  <script src="https://unpkg.com/@mongodb-js/charts-embed-dom@beta"></script>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" -->
+  <!-- integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" -->
+  <!-- crossorigin="anonymous"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"
+    integrity="sha256-rpJ+HjSd+yNlN2PAWJysBHztKUGZt+9XhwsqWzTgJaA=" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
+  {% block head %} {% endblock %}
+</head>
+
+<body>
+  <div class="row">
+    <div id="navbar" class="col-lg-2 col-md-3 sidebar text-center">
+      <div class="logo-container">
+          <img src="https://internetremovals.com/wp-content/uploads/2021/03/white-and-yellow-02-600x200.png" alt="Logo">
+      </div>
+      <a href="{{ url_for('results') }}">Dashboard</a>
+      <a href="#requests">Requests</a>
+      <a href="#inprogress">In Progress</a>
+      <a href="#completed">Completed</a>
+      <a href="{{ url_for('contact') }}">Support</a>
+      <a href="{{ url_for('faq') }}">FAQ</a>
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('profile') }}">Settings</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-10 col-md-9 col-sm-12">
+      <i id="menu-icon"  class="fa fa-list-ul menu-icon"></i>
+      {% block content %} {% endblock %}
+      <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Internet Removals. All rights reserved | Contact us at <a href="mailto:support@internetremovals.com">support@internetremovals.com</p>
+            <p></a></p>
+        </div>
+      </footer>
+    </div>
+    <div id="mySidenav" class="mobile-sidebar">
+      <a href="javascript:void(0)" id="closebtn" class="closebtn">&times;</a>
+      <div class="logo-container">
+        <img src="https://internetremovals.com/wp-content/uploads/2021/03/white-and-yellow-02-600x200.png" alt="Logo">
+      </div>
+      <a href="{{ url_for('results') }}">Dashboard</a>
+      <a href="#requests">Requests</a>
+      <a href="#inprogress">In Progress</a>
+      <a href="#completed">Completed</a>
+      <a href="{{ url_for('contact') }}">Support</a>
+      <a href="{{ url_for('faq') }}">FAQ</a>
+      {% if current_user.is_authenticated %}
+        <a  href="{{ url_for('profile') }}">Settings</a>
+        <a  href="{{ url_for('logout') }}">Logout</a>
+      {% endif %}
+    </div>
+  </div>
+  </div> 
+</body>
+
+{% block js %} {% endblock %}
+<script>
+  $(document).ready(function(){
+    $('#menu-icon').click(function(){
+      console.log("test")
+      document.getElementById("mySidenav").style.width = "250px";
+    });
+    $('#closebtn').click(function(){
+      document.getElementById("mySidenav").style.width = "0px";
+    })
+  })
+</script>
+</html>
