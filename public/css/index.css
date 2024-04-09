@@ -69,6 +69,7 @@ html, body {
   margin-left: 50px;
 }
 .dashboard{
+  margin-top: 20px;
   padding: 40px;
   display: block;
 }
