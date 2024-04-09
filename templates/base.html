@@ -35,7 +35,7 @@
       <a href="{{ url_for('results') }}">Dashboard</a>
       <a href="{{ url_for('submit') }}">Requests</a>
       <a href="{{ url_for('progress') }}">In Progress</a>
-      <a href="{{ url_for('complete') }}">Completed</a>
+      <a href="{{ url_for('submit') }}">Completed</a>
       <a href="{{ url_for('contact') }}">Support</a>
       <a href="{{ url_for('faq') }}">FAQ</a>
       {% if current_user.is_authenticated %}
@@ -43,8 +43,8 @@
         <a href="{{ url_for('logout') }}">Logout</a>
       {% endif %}
     </div>
-    <div class="col-lg-10 col-md-9 col-sm-12">
-      <i id="menu-icon"  class="fa fa-list-ul menu-icon"></i>
+    <div class="col-lg-10 col-md-9 col-sm-12 position-relative">
+      <i id="menu-icon"  class="position-absolute fa fa-list-ul menu-icon"></i>
       {% block content %} {% endblock %}
       <footer class="footer">
         <div class="footer-content">
