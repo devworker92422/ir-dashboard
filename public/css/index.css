@@ -391,6 +391,9 @@ a:hover {
 .updating-box{
   background-color: #ffbf00;
 }
+.th-bg-color{
+  background-color: #ffbf00;
+}
 .pieChart {
   width: 200px;
   height: 200px;
