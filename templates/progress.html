@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="main-content">
+<div class="dashboard">
   <div class="dashboard-header">
     <div class="stat">
       <h1>{{ requests }}</h1>
@@ -27,63 +27,70 @@
       <p>Completed</p>
     </div>
   </div>
-  <div class="content-container">
-    <div class="top-infringers-container">
-      <div class="top-infringers-header">Monthly Link Status</div>
-      <ul class="top-infringers-list">
-          <li>Total Links Removed:<span>224 links</span></li>
-          <li>Total Links Submitted<span>198 links</span></li>
-      </ul>
-      <div class="chart-container">
-          <!-- <img src="C:\PYTHONPROGRAMS\DASHBOARD\templates\pie-chart.png" alt="Pie Chart" class="pie-chart"> -->
+  <div class="row infringers-board ">
+    <div class="col-md-6 col-lg-6 infringers-element">
+      <div class="top-infringers-container ">
+        <div class="top-infringers-header">Monthly Link Status</div>
+        <ul class="top-infringers-list">
+            <li>Total Links Removed:<span>{{ siteComplete }} links</span></li>
+            <li>Total Google Removals:<span>{{ googleComplete }} links</span></li>
+        </ul>
+        <div class="chart-container">
+            <!-- <img src="C:\PYTHONPROGRAMS\DASHBOARD\templates\pie-chart.png" alt="Pie Chart" class="pie-chart"> -->
+        </div>
       </div>
     </div>
-    <div class="top-infringers-container">
+    <div class="col-md-6 col-lg-6 infringers-element">
+      <div class="top-infringers-container ">
         <div class="top-infringers-header">Top Infringers</div>
           <ul class="top-infringers-list">
             {% for t in topoffenders %}
                 <li> {{t._id}} <span> {{t.count}} links</span></li>
             {% endfor %}
           </ul>
+        </div>
     </div>
+    
   </div>
   <div class="container-fluid">
-    <table id="example" class="table table-bordered table-stripe table-hover table-compact bg-white" style="width:100%">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Date</th>
-          <th>Requester Email</th>
-          <th>Client Name</th>
-          <th>Client Email</th>
-          <th>URL</th>
-          <th>Website Status</th>
-          <th>Google Status</th>
-          <th>Date Checked</th>
-          <th>Submission Count</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </tfoot>
-    </table>
+    <div class="overflow-auto">
+      <table id="example" class="table table-bordered table-stripe table-hover table-compact bg-white" style="width:100%">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Requester Email</th>
+            <th>Client Name</th>
+            <th>Client Email</th>
+            <th>URL</th>
+            <th>Website Status</th>
+            <th>Google Status</th>
+            <th>Date Checked</th>
+            <th>Submission Count</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </div>
 </div>
 {% endblock %}
 
 {% block js %}
-  <script src="{{ url_for('static', filename = 'js/chart.js') }}"></script>
+  <script src="{{ url_for('static', filename = 'js/progressChart.js') }}"></script>
 {% endblock %}

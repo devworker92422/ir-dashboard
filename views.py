@@ -248,6 +248,12 @@ def results():
     progress = Urlstatus.objects(cond & Q(google_status__ne="Removed")).count()
     completed = Urlstatus.objects(cond & Q(google_status="Removed")).count()
     canceled = Urlstatus.objects(cond & Q(status=None)).count()
+    current_month = datetime.now().strftime('/%m/%Y')
+    
+    requests_monthly = Urlstatus.objects(cond & Q(date__contains=current_month)).count()
+    progress_monthly = Urlstatus.objects(cond & Q(google_status__ne="Removed") & Q(date__contains=current_month)).count()
+    completed_monthly = Urlstatus.objects(cond & Q(google_status="Removed")  & Q(date__contains=current_month)).count()
+    canceled_monthly = Urlstatus.objects(cond & Q(status=None)  & Q(date__contains=current_month)).count()
     topoffender = list(
         Urlstatus.objects().aggregate(
             [
@@ -282,10 +288,146 @@ def results():
         progress=progress,
         completed=completed,
         canceled=canceled,
+        requestsPerMon=requests_monthly,
+        progressPerMon=progress_monthly,
+        completedPerMon=completed_monthly,
+        canceledPerMon=canceled_monthly,
         topoffenders=(topoffenders),
         role = role
     )
 
+@login_required
+def detail():
+    role=current_user.role
+    id = request.args.get('id')
+    data = Urlstatus.objects(_id=ObjectId(id)).first()
+    json_data= json.loads(data.to_json())
+
+    if json_data['status'] =="Removed":
+        json_data['site_color'] = "removed"
+    elif json_data['status'] == 'Status Updating':
+        json_data['site_color'] ='updating'
+        json_data['status']="Updating"
+    else:
+        json_data['site_color'] ='live'
+
+    if json_data['google_status'] =="Removed":
+        json_data['google_color'] = "removed"
+    elif json_data['google_status'] == 'Status Updating':
+        json_data['google_color'] ='updating'
+        json_data['google_status']="Updating"
+    else:
+        json_data['google_color'] ='live'
+    if type(json_data['latest_update']['$date']) == int:
+        json_data['latest_update']= datetime.fromtimestamp(json_data['latest_update']['$date']/1000).strftime('%m/%d/%Y')
+    else:
+        json_data['latest_update'] =json_data['latest_update']['$date']
+    
+    return render_template("detail.html",role=role,detail=json_data)
+
+@login_required
+def complete():
+    cond = Q(client_email=current_user.email) |Q(requester_email=current_user.email)
+    role = current_user.role
+    requests = Urlstatus.objects(cond).count()
+    progress = Urlstatus.objects(cond & Q(google_status__ne="Removed")).count()
+    completed = Urlstatus.objects(cond & Q(google_status="Removed")).count()
+    canceled = Urlstatus.objects(cond & Q(status=None)).count()
+    current_month = datetime.now().strftime('/%m/%Y')
+    current_month = datetime.now().strftime('/%m/%Y')
+    monthly_completed = Urlstatus.objects(cond & Q(status="Removed") & (Q(date__contains=current_month))).count()
+    monthly_google_completed = Urlstatus.objects(cond & Q(google_status="Removed") & (Q(date__contains=current_month))).count()
+    topoffender = list(
+        Urlstatus.objects().aggregate(
+            [
+                {"$match": {"client_email": current_user.email}},
+                {
+                    "$project": {
+                        "domain": {
+                            "$substr": ["$url", 0, {"$indexOfBytes": ["$url", "/", 8]}]
+                        }
+                    }
+                },
+                {
+                    "$group": {
+                        "_id": "$domain",
+                        "count": {"$count": {}},
+                    }
+                },
+                {"$sort": {"count": -1}},
+                {"$limit": 3},
+            ]
+        )
+    )
+    topoffenders = []
+    for t in topoffender:
+        if t['_id'].find('//')>0:
+            t["_id"] = t["_id"][t["_id"].index("//") + 2 : len(t["_id"])]
+        topoffenders.append(t)
+    app.logger.info(topoffenders)
+    return render_template(
+        "complete.html",
+        requests=requests,
+        progress=progress,
+        completed=completed,
+        canceled=canceled,
+        siteComplete = monthly_completed,
+        googleComplete =monthly_google_completed,
+        topoffenders=(topoffenders),
+        role = role
+    )
+
+@login_required
+def progress():
+    cond = Q(client_email=current_user.email) |Q(requester_email=current_user.email)
+    role = current_user.role
+    requests = Urlstatus.objects(cond).count()
+    progress = Urlstatus.objects(cond & Q(google_status__ne="Removed")).count()
+    completed = Urlstatus.objects(cond & Q(google_status="Removed")).count()
+    canceled = Urlstatus.objects(cond & Q(status=None)).count()
+    current_month = datetime.now().strftime('/%m/%Y')
+    current_month = datetime.now().strftime('/%m/%Y')
+    monthly_completed = Urlstatus.objects(cond & Q(status__ne="Removed") & (Q(date__contains=current_month))).count()
+    monthly_google_completed = Urlstatus.objects(cond & Q(google_status__ne="Removed") & (Q(date__contains=current_month))).count()
+    topoffender = list(
+        Urlstatus.objects().aggregate(
+            [
+                {"$match": {"client_email": current_user.email}},
+                {
+                    "$project": {
+                        "domain": {
+                            "$substr": ["$url", 0, {"$indexOfBytes": ["$url", "/", 8]}]
+                        }
+                    }
+                },
+                {
+                    "$group": {
+                        "_id": "$domain",
+                        "count": {"$count": {}},
+                    }
+                },
+                {"$sort": {"count": -1}},
+                {"$limit": 3},
+            ]
+        )
+    )
+    topoffenders = []
+    for t in topoffender:
+        if t['_id'].find('//')>0:
+            t["_id"] = t["_id"][t["_id"].index("//") + 2 : len(t["_id"])]
+        topoffenders.append(t)
+    app.logger.info(topoffenders)
+    return render_template(
+        "progress.html",
+        requests=requests,
+        progress=progress,
+        completed=completed,
+        canceled=canceled,
+        siteComplete = monthly_completed,
+        googleComplete =monthly_google_completed,
+        topoffenders=(topoffenders),
+        role = role
+    )
 
 @login_required
 def profile():

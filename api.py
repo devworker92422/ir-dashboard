@@ -82,38 +82,8 @@ def urls():
         cond = cond & Q(client_name=client_name_key)
     app.logger.info(cond)
     total = Urlstatus.objects(cond).count()
-    progress = Urlstatus.objects(cond & Q(google_status__ne="Removed")).count()
-    completed = Urlstatus.objects(cond & Q(google_status="Removed")).count()
     if total < page * limit and total > (page - 1) * limit:
         limit = int(total - (page - 1) * limit)
-    topoffender = list(
-        Urlstatus.objects(cond).aggregate(
-            [
-                {"$match": {"client_email": searcg_email}},
-                {
-                    "$project": {
-                        "domain": {
-                            "$substr": ["$url", 0, {"$indexOfBytes": ["$url", "/", 8]}]
-                        }
-                    }
-                },
-                {
-                    "$group": {
-                        "_id": "$domain",
-                        "count": {"$count": {}},
-                    }
-                },
-                {"$sort": {"count": -1}},
-                {"$limit": 3},
-            ]
-        )
-    )
-    topoffenders = []
-    for t in topoffender:
-        if t['_id'].find('//')>0:
-            t["_id"] = t["_id"][t["_id"].index("//") + 2 : len(t["_id"])]
-        topoffenders.append(t)
-
     pipeline = [
         {"$group": {
             "_id": "$url",
@@ -177,9 +147,203 @@ def urls():
         "recordsTotal": total,
         "recordsFiltered": int(total_count),
         "data": records,
-        "completed" : completed,
-        "progress" : progress,
-        "topoffenders" : topoffenders
+    }
+    return json.dumps(response,default=json_util.default)
+
+@login_required
+def urls_completed():
+    q = request.args.to_dict()
+    search_key = ''
+    if q.get('search[value]') != None:
+        search_key = str(q.get('search[value]'))
+    google_status_key = q.get("columns[7][search][value]")
+    status_key = q.get("columns[6][search][value]")
+    client_name_key = q.get("columns[3][search][value]")
+    limit = int(q.get("length", 10))
+    page = int(q.get("start", 0)) / limit + 1
+    field = q.get(f'columns[{q.get("order[0][column]")}][name]')
+    d = f'{"+" if q.get("order[0][dir]") == "desc" else "-"}'
+    d = 1 if q.get("order[0][dir]") == "desc" else -1
+    searcg_email = current_user.email
+    cond =  (Q(client_email=searcg_email) |Q(requester_email=searcg_email) )& (Q(client_name__contains=search_key) | Q(url__contains=search_key) | Q(requester_email__contains=search_key) | Q(client_email__contains=search_key)) 
+    if google_status_key:
+        cond = cond & Q(google_status=google_status_key)
+    if status_key:
+        cond = cond & Q(status=status_key)
+    if client_name_key:
+        cond = cond & Q(client_name=client_name_key)
+    app.logger.info(cond)
+    total = Urlstatus.objects(cond).count()
+    current_month = datetime.now().strftime('/%m/%Y')
+    monthly_completed = Urlstatus.objects(cond & Q(status="Removed") & (Q(date__contains=current_month))).count()
+    monthly_google_completed = Urlstatus.objects(cond & Q(google_status="Removed") & (Q(date__contains=current_month))).count()
+    if total < page * limit and total > (page - 1) * limit:
+        limit = int(total - (page - 1) * limit)
+    pipeline = [
+        {"$group": {
+            "_id": "$url",
+            "total_count" : {"$sum" : 1},
+            "max_submission_count": {"$max": "$submission_count"},
+            "document": {"$first": "$$ROOT"}
+        }},
+        {"$replaceRoot": {"newRoot": "$document"}},
+        {
+            "$project" : {
+                "_id" : 1,
+                "client_name" : 1,
+                "client_email" : 1,
+                "url" : 1,
+                "status"  :1,
+                "google_status" : 1,
+                "submission_count" : 1,
+                "date_checked" : 1,
+                "date" : 1,
+                "requester_email" : 1,
+            }
+        },
+        {"$unwind" : "$url"},
+        
+        {"$sort": {field: d}},
+        {
+            "$facet": {
+            "paginatedResults": [{ "$skip": (page-1)*limit }, { "$limit": limit }],
+            "totalCount": [
+                {
+                "$count": 'count'
+                }
+            ]
+        }
+    }
+    ]
+    result = (Urlstatus.objects(cond &(Q(status="Removed"))).aggregate(pipeline,allowDiskUse=True))
+    data = list(result)
+    print(data[0])
+    try:
+        total_count = data[0]['totalCount'][0]['count']
+    except:
+        total_count = 0
+    data = data[0]['paginatedResults']
+    records = []
+    for d in data:
+        record = d
+        record["id"] = str(record["_id"])
+        try:
+            if np.isnan(record['google_status']):
+                record['google_status'] = 'Status Updating'
+        except:
+            pass
+        
+        try:
+            if np.isnan(record['client_name']):
+                record['client_name'] = 'Unknown'
+        except:
+            pass
+        records.append(record)
+    response = {
+        "draw": q.get("draw"),
+        "recordsTotal": total,
+        "recordsFiltered": int(total_count),
+        "data": records,
+        "monthly_completed" : monthly_completed,
+        "monthly_google_completed" : monthly_google_completed,
+    }
+    return json.dumps(response,default=json_util.default)
+
+@login_required
+def urls_in_progress():
+    q = request.args.to_dict()
+    search_key = ''
+    if q.get('search[value]') != None:
+        search_key = str(q.get('search[value]'))
+    google_status_key = q.get("columns[7][search][value]")
+    status_key = q.get("columns[6][search][value]")
+    client_name_key = q.get("columns[3][search][value]")
+    limit = int(q.get("length", 10))
+    page = int(q.get("start", 0)) / limit + 1
+    field = q.get(f'columns[{q.get("order[0][column]")}][name]')
+    d = f'{"+" if q.get("order[0][dir]") == "desc" else "-"}'
+    d = 1 if q.get("order[0][dir]") == "desc" else -1
+    searcg_email = current_user.email
+    cond =  (Q(client_email=searcg_email) |Q(requester_email=searcg_email) )& (Q(client_name__contains=search_key) | Q(url__contains=search_key) | Q(requester_email__contains=search_key) | Q(client_email__contains=search_key))
+    if google_status_key:
+        cond = cond & Q(google_status=google_status_key)
+    if status_key:
+        cond = cond & Q(status=status_key)
+    if client_name_key:
+        cond = cond & Q(client_name=client_name_key)
+    app.logger.info(cond)
+    total = Urlstatus.objects(cond).count()
+    current_month = datetime.now().strftime('/%m/%Y')
+    monthly_completed = Urlstatus.objects(cond & Q(status__ne="Removed") & (Q(date__contains=current_month))).count()
+    monthly_google_completed = Urlstatus.objects(cond & Q(google_status__ne="Removed") & (Q(date__contains=current_month))).count()
+    if total < page * limit and total > (page - 1) * limit:
+        limit = int(total - (page - 1) * limit)
+    pipeline = [
+        {"$group": {
+            "_id": "$url",
+            "total_count" : {"$sum" : 1},
+            "max_submission_count": {"$max": "$submission_count"},
+            "document": {"$first": "$$ROOT"}
+        }},
+        {"$replaceRoot": {"newRoot": "$document"}},
+        {
+            "$project" : {
+                "_id" : 1,
+                "client_name" : 1,
+                "client_email" : 1,
+                "url" : 1,
+                "status"  :1,
+                "google_status" : 1,
+                "submission_count" : 1,
+                "date_checked" : 1,
+                "date" : 1,
+                "requester_email" : 1,
+            }
+        },
+        {"$unwind" : "$url"},
+        {"$sort": {field: d}},
+        {
+            "$facet": {
+            "paginatedResults": [{ "$skip": (page-1)*limit }, { "$limit": limit }],
+            "totalCount": [
+                {
+                "$count": 'count'
+                }
+            ]
+        }
+    }
+    ]   
+    result = (Urlstatus.objects(cond &(Q(status__ne="Removed"))).aggregate(pipeline,allowDiskUse=True))
+    data = list(result)
+    print(data[0])
+    try:
+        total_count = data[0]['totalCount'][0]['count']
+    except:
+        total_count = 0
+    data = data[0]['paginatedResults']
+    records = []
+    for d in data:
+        record = d
+        record["id"] = str(record["_id"])
+        try:
+            if np.isnan(record['google_status']):
+                record['google_status'] = 'Status Updating'
+        except:
+            pass
+        
+        try:
+            if np.isnan(record['client_name']):
+                record['client_name'] = 'Unknown'
+        except:
+            pass
+        records.append(record)
+    response = {
+        "draw": q.get("draw"),
+        "recordsTotal": total,
+        "recordsFiltered": int(total_count),
+        "data": records,
+        "monthly_progress" : monthly_completed,
+        "monthly_google_progress" : monthly_google_completed,
     }
     return json.dumps(response,default=json_util.default)
 

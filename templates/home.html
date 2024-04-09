@@ -32,8 +32,8 @@
       <div class="top-infringers-container ">
         <div class="top-infringers-header">Monthly Link Status</div>
         <ul class="top-infringers-list">
-            <li>Total Links Removed:<span>224 links</span></li>
-            <li>Total Links Submitted<span>198 links</span></li>
+            <li>Total Links Removed:<span>{{completedPerMon}} links</span></li>
+            <li>Total Links Submitted<span>{{requestsPerMon}} links</span></li>
         </ul>
         <div class="chart-container">
             <!-- <img src="C:\PYTHONPROGRAMS\DASHBOARD\templates\pie-chart.png" alt="Pie Chart" class="pie-chart"> -->
@@ -92,5 +92,5 @@
 {% endblock %}
 
 {% block js %}
-  <script src="{{ url_for('static', filename = 'js/chart.js') }}"></script>
+  <script src="{{ url_for('static', filename = 'js/homeChart.js') }}"></script>
 {% endblock %}

@@ -251,12 +251,13 @@ a {
 .btn:hover {
   background-color: #e6ac00;
 }
-.card {
+.detail-card {
   background: #fff;
   padding: 20px;
   border-radius: 10px;
   margin-top: 20px;
   color: #333;
+  min-height: 330px;
 }
 
 a:hover {
@@ -313,6 +314,83 @@ a:hover {
   color: #ffbf00; /* Optional: Change the color to match the theme */
   margin-bottom: 20px; /* Add some space between the title and accordion */
 }
+.feedbackcard {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+  margin-top: 20px;
+}
+.feedback-section textarea{
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  color: #333;
+}
+.card{
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  color: #333;
+}
+.section-header {
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ffbf00;
+}
+.detail-item {
+  margin-bottom: 10px;
+}
+.detail-label {
+  font-weight: bold;
+}
+.detail-value, .action-button {
+  margin-left: 10px;
+  color: #121642;
+}
+.action-button {
+  background-color: #ffbf00;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+  display: inline-block;
+  color: #fff;
+}
+.action-button:hover {
+  background-color: #e6ac00;
+}
+.status {
+  font-weight: bold;
+}
+.live {
+  color: #2ecc71;
+}
+.removed {
+  color: #e74c3c;
+}
+.updating {
+  color: #ffbf00;
+}
+.status-box{
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-align: center;
+  color: #fff;
+}
+.live-box{
+  background-color: #2ecc71;
+}
+
+.removed-box{
+  background-color: #e74c3c;
+}
+.updating-box{
+  background-color: #ffbf00;
+}
 .pieChart {
   width: 200px;
   height: 200px;
@@ -338,6 +416,9 @@ a:hover {
 }
 .content-container, .dashboard-header, .top-infringers-container {
   flex-direction: column; /* Stack elements vertically */
+}
+.detail-card{
+  min-height: auto;
 }
 }
 

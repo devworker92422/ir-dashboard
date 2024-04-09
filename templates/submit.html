@@ -9,26 +9,26 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-    <h2>Submit URLs</h2>
-    <p>Use this text box to enter a list of URLs for our team to work on</p>
-    <form id="submit_urls_form" method="post">
+    <div class="form-container">
+      <h2>Submit URLs</h2>
+      <p>Use this text box to enter a list of URLs for our team to work on</p>
+      
       <div class="form-group">
-        <label for="client_email">Your Email:</label>
-        <input type="email" class="form-control" required placeholder="Please enter your email" id="email" name="email" />
-        <label for="client_email">Your Username/Creator Name/Business Name:</label>
-        <input type="text" class="form-control" required placeholder="Please enter your Your Username/Creator Name/Business Name" id="username" name="username" />
-
-        <!-- can we make this a multi line text box? -->
+          <label for="email" class="form-label">Your Email:</label>
+          <input type="email" id="email" name="email" class="form-input" placeholder="Please enter your email">
       </div>
+      
       <div class="form-group">
-        <label for="url_input">URLs:</label>
-        <textarea class="form-control" placeholder="Enter URLs" name="url_input" id="url_input"></textarea>
-        <!-- insteaf of URLs separated by comma, can we make this a multi line text box? -->
+          <label for="name" class="form-label">Your Username/Creator Name/Business Name:</label>
+          <input type="text" id="username" name="username"  class="form-input" placeholder="Please enter your Username/Creator Name/Business Name">
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    <div id="success_message" style="display: none; margin-top: 10px;">
-      <p>Thanks, we have your submission</p>
+      
+      <div class="form-group">
+          <label for="urls" class="form-label">URLs:</label>
+          <textarea name="url_input" id="url_input" class="form-textarea" placeholder="Enter URLs"></textarea>
+      </div>
+      
+      <button type="submit" class="btn-submit">Submit</button>
     </div>
   </div>
 {% endblock %}

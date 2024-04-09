@@ -12,19 +12,9 @@ function updateStatus(obj) {
       'status': value,
     }),
     success: function (response) {
-      // Handle successful response
-      // let data = JSON.parse(response)
-      // console.log(data)
       table.draw(false);
-      // if(data['status'] == 'fail'){
-      //   alert(data['message'])
-      // }
-      // else{
-      //   table.draw(false);
-      // }
     },
     error: function (xhr, status, error) {
-      // Handle error response
       console.log(xhr.responseText);
     }
   });
@@ -73,12 +63,6 @@ $(document).ready(function () {
       complete: function (response) {
         console.log(response);
         var jsonRes = response.responseJSON
-        var total = jsonRes['recordsTotal'];
-        var completed = jsonRes['completed'];
-        var progress = total - completed;
-        $('#total').html(total);
-        $('#progress').html(progress);
-        $('#completed').html(completed);
         var topoffenders = jsonRes['topoffenders'];
         for (var i = 1; i < 4; i++) {
           $('#to_' + i).html('');
@@ -132,18 +116,18 @@ $(document).ready(function () {
           if (role < 3 & role > 0)
             return `<select class='form-control' onChange='updateStatus(this)'>
                     <option value='Live' ${live} ">Live</option>
-                    <option value='Status Updating' ${status_updating}>Status Updating</option>
+                    <option value='Status Updating' ${status_updating}>Updating</option>
                     <option value='Removed' ${removed}>Remove</option>
                     <option value='' ${d}></option>
                   </select>`
           else
             switch (data.toString().toLowerCase()) {
               case "live":
-                return `<span class='badge badge-pill badge-success'>${data}</span>`;
+                return `<div class='status-box live-box'>${data}</div>`;
               case "status updating":
-                return `<span class='badge badge-pill badge-warning'>${data}</span>`;
+                return `<div class='status-box updating-box'>Updating</div>`;
               case "removed":
-                return `<span class='badge badge-pill badge-danger'>${data}</span>`;
+                return `<div class='status-box removed-box'>${data}</div>`;
               default:
                 return '';
             }
@@ -169,28 +153,28 @@ $(document).ready(function () {
           if (role < 3 & role > 0)
             return `<select class='form-control' onChange='updateGoogleStatus(this)'>
                     <option value='Live' ${live}>Live</option>
-                    <option value='Status Updating' ${status_updating}>Status Updating</option>
+                    <option value='Status Updating' ${status_updating}>Updating</option>
                     <option value='Removed' ${removed}>Remove</option>
                     <option value='' ${d}>Unknown</option>
                   </select>`
           else
             switch (data.toString().toLowerCase()) {
               case "live":
-                return `<span class='badge badge-pill badge-success'>${data}</span>`;
+                return `<div class='status-box live-box'>${data}</div>`;
               case "status updating":
-                return `<span class='badge badge-pill badge-warning'>${data}</span>`;
+                return `<div class='status-box updating-box'>Updating</div>`;
               case "removed":
-                return `<span class='badge badge-pill badge-danger'>${data}</span>`;
+                return `<div class='status-box removed-box'>${data}</div>`;
               default:
                 return '';
             }
         },
       },
       { name: "date_checked", data: "date_checked", render: function (data, type, row) { if (data) { return data; } else { return '' } } },
-      { name: "submission_count", data: "submission_count", render: function (data, type, row) { if (data) { return data; } else { return '1' } } },
+      { name: "submission_count", data: "submission_count", render: function (data, type, row) { if (data) { return `<div class="text-center">${data}</div>`; } else { return '1' } } },
       {
-        name: "action", data: 'url', render: function (data, type, row) {
-          return `<a target="_blank" href="${data}" class="btn">Open</a>`
+        name: "action", data: 'id', render: function (data, type, row) {
+          return `<a target="_blank" href="/detail?id=${data}" class="btn">Open</a>`
         }
       }
     ],

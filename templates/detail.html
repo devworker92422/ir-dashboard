@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="dashboard">
+    <h1>Submission Information</h1>
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="detail-card">
+                <div class="section-header">Request Information</div>
+                <div class="detail-item">
+                    <span class="detail-label">URL in Question:</span>
+                    <span class="detail-value"><a href="{{detail.url}}" target="_blank">{{detail.url}}</a></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Request Identifier:</span>
+                    <span class="detail-value">{{detail._id['$oid']}}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Requester's Email:</span>
+                    <span class="detail-value">{{detail.requester_email}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="detail-card">
+                <div class="section-header">Current Status and Activity</div>
+                <div class="detail-item">
+                    <span class="detail-label">Removal Status:</span>
+                    <span class="detail-value status {{detail.site_color}}">{{detail.status}}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Google Status:</span>
+                    <span class="detail-value status {{detail.google_color}}">{{detail.google_status}}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Latest Update:</span>
+                    <span class="detail-value">{{detail.latest_update}}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Last Checked:</span>
+                    <span class="detail-value">{{detail.date_checked}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="detail-card">
+                <div class="section-header">Client Details</div>
+                <div class="detail-item">
+                    <span class="detail-label">Client Name:</span>
+                    <span class="detail-value">{{detail.client_name}}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Submissions Made:</span>
+                    <span class="detail-value">{{detail.submission_count}}</span>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <div class="feedbackcard feedback-section">
+        <div class="section-header">Feedback/Comments</div>
+        <textarea placeholder="Please provide any feedback or additional information here."></textarea>
+        <div style="margin-top: 10px;">
+            <button class="action-button">Submit Feedback</button>
+        </div>
+    </div>
+    <div class="feedbackcard ">
+        <div class="section-header">Actions</div>
+        <a href="/contact" class="action-button">Contact Support</a>
+        <a href="/submit" class="action-button">Submit Another Removal</a>
+    </div>
+    
+  </div>
+{% endblock %}

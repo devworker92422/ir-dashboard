@@ -34,6 +34,9 @@ from app import views
 from app import api
 
 app.add_url_rule("/", view_func=views.results, methods=["GET", "POST"])
+app.add_url_rule("/complete", view_func=views.complete, methods=["GET", "POST"])
+app.add_url_rule("/progress", view_func=views.progress, methods=["GET", "POST"])
+app.add_url_rule("/detail", view_func=views.detail, methods=["GET", "POST"])
 app.add_url_rule("/lead", view_func=views.lead, methods=["GET", "POST"])
 app.add_url_rule("/login", view_func=views.login, methods=["GET", "POST"])
 app.add_url_rule("/signup", view_func=views.signup, methods=["GET", "POST"])
@@ -50,6 +53,8 @@ app.add_url_rule("/checkResetPassword", view_func=views.checkResetPassword, meth
 
 # APIs
 app.add_url_rule("/api/urls", view_func=api.urls, methods=["GET", "POST"])
+app.add_url_rule("/api/progressUrl", view_func=api.urls_in_progress, methods=["GET", "POST"])
+app.add_url_rule("/api/completeUrl", view_func=api.urls_completed, methods=["GET", "POST"])
 app.add_url_rule("/api/leads", view_func=api.leads, methods=["GET", "POST"])
 app.add_url_rule("/api/export", view_func=api.export, methods=["GET", "POST"])
 app.add_url_rule("/api/getClients",view_func=api.getClients,methods=["GET","POST"])
