@@ -59,9 +59,9 @@
     </div>
     <div class="feedbackcard feedback-section">
         <div class="section-header">Feedback/Comments</div>
-        <textarea placeholder="Please provide any feedback or additional information here."></textarea>
+        <textarea id="feedbackMsg" placeholder="Please provide any feedback or additional information here."></textarea>
         <div style="margin-top: 10px;">
-            <button class="action-button">Submit Feedback</button>
+            <button class="action-button" id="submitBtn">Submit Feedback</button>
         </div>
     </div>
     <div class="feedbackcard ">
@@ -69,6 +69,9 @@
         <a href="/contact" class="action-button">Contact Support</a>
         <a href="/submit" class="action-button">Submit Another Removal</a>
     </div>
-    
   </div>
+{% endblock %}
+
+{% block js %}
+  <script src="{{ url_for('static', filename = 'js/detail.js') }}"></script>
 {% endblock %}

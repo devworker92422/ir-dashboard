@@ -819,3 +819,10 @@ def updateGoogleStatus():
     status = data['status']
     Urlstatus.objects(id=ObjectId(id)).update_one(set__google_status=status)
     return 'success'
+
+@login_required
+def feedback():
+    msg = request.form.get('feedback')
+    print(msg)
+    # mail function 
+    return msg

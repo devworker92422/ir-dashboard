@@ -53,6 +53,7 @@ app.add_url_rule("/checkResetPassword", view_func=views.checkResetPassword, meth
 
 # APIs
 app.add_url_rule("/api/urls", view_func=api.urls, methods=["GET", "POST"])
+app.add_url_rule("/api/feedback", view_func=api.feedback, methods=["POST"])
 app.add_url_rule("/api/progressUrl", view_func=api.urls_in_progress, methods=["GET", "POST"])
 app.add_url_rule("/api/completeUrl", view_func=api.urls_completed, methods=["GET", "POST"])
 app.add_url_rule("/api/leads", view_func=api.leads, methods=["GET", "POST"])
