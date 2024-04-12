@@ -61,6 +61,9 @@ html, body {
   color: #ffbf00;
   display: block;
 }
+.a-link {
+  color: #ffbf00;
+}
 .mobile-sidebar .closebtn{
   position: absolute;
   top: 0;
@@ -438,6 +441,13 @@ a:hover {
   width: 10px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+@media only screen and (max-width:1000px) {
+  .chart-container {
+    display: flex;
+    flex-direction: column  ;
+  }
 }
 
 @media only screen and (max-width: 768px) {

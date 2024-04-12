@@ -48,7 +48,7 @@ $(document).ready(function () {
             { extend: "pageLength", className: "btn bg-white " },
             {
                 text: "XLSX",
-                className: "btn bg-white"
+                className: "btn bg-white",
                 autoFilter: true,
                 action: function (e, dt, node, config) {
                     location.href = "/api/export?" + $.param(dt.ajax.params());
