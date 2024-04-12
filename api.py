@@ -824,5 +824,5 @@ def updateGoogleStatus():
 def feedback():
     msg = request.form.get('feedback')
     print(msg)
-    # mail function 
+    
     return msg

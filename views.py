@@ -33,6 +33,7 @@ from app.models.preq import Preq
 from app.models.dmcaapp import DmcaApp
 import requests
 import io
+import math
 from urllib.parse import urlparse
 import sys
 try:
@@ -254,6 +255,9 @@ def results():
     progress_monthly = Urlstatus.objects(cond & Q(google_status__ne="Removed") & Q(date__contains=current_month)).count()
     completed_monthly = Urlstatus.objects(cond & Q(google_status="Removed")  & Q(date__contains=current_month)).count()
     canceled_monthly = Urlstatus.objects(cond & Q(status=None)  & Q(date__contains=current_month)).count()
+    completePct = getPctValue(completed_monthly, requests_monthly)
+    updatingPct = getPctValue(progress_monthly, requests_monthly)
+    livePct = 100 - completePct - updatingPct
     topoffender = list(
         Urlstatus.objects().aggregate(
             [
@@ -291,6 +295,9 @@ def results():
         requestsPerMon=requests_monthly,
         progressPerMon=progress_monthly,
         completedPerMon=completed_monthly,
+        livePct = str(livePct)+"%",
+        removedPct = str(completePct)+"%",
+        updatingPct = str(updatingPct)+"%",
         canceledPerMon=canceled_monthly,
         topoffenders=(topoffenders),
         role = role
@@ -334,9 +341,14 @@ def complete():
     completed = Urlstatus.objects(cond & Q(google_status="Removed")).count()
     canceled = Urlstatus.objects(cond & Q(status=None)).count()
     current_month = datetime.now().strftime('/%m/%Y')
-    current_month = datetime.now().strftime('/%m/%Y')
-    monthly_completed = Urlstatus.objects(cond & Q(status="Removed") & (Q(date__contains=current_month))).count()
-    monthly_google_completed = Urlstatus.objects(cond & Q(google_status="Removed") & (Q(date__contains=current_month))).count()
+    requests_monthly = Urlstatus.objects(cond & Q(date__contains=current_month)).count()
+    progress_monthly = Urlstatus.objects(cond & Q(google_status__ne="Removed") & Q(date__contains=current_month)).count()
+    completed_monthly = Urlstatus.objects(cond & Q(google_status="Removed")  & Q(date__contains=current_month)).count()
+    completePct = getPctValue(completed_monthly, requests_monthly)
+    updatingPct = getPctValue(progress_monthly, requests_monthly)
+    livePct = 100 - completePct - updatingPct
+    # monthly_completed = Urlstatus.objects(cond & Q(status="Removed") & (Q(date__contains=current_month))).count()
+    # monthly_google_completed = Urlstatus.objects(cond & Q(google_status="Removed") & (Q(date__contains=current_month))).count()
     topoffender = list(
         Urlstatus.objects().aggregate(
             [
@@ -371,8 +383,11 @@ def complete():
         progress=progress,
         completed=completed,
         canceled=canceled,
-        siteComplete = monthly_completed,
-        googleComplete =monthly_google_completed,
+        completePerMon = completed_monthly,
+        requestPerMon =requests_monthly,
+        livePct = str(livePct)+"%",
+        removedPct = str(completePct)+"%",
+        updatingPct = str(updatingPct)+"%",
         topoffenders=(topoffenders),
         role = role
     )
@@ -386,9 +401,14 @@ def progress():
     completed = Urlstatus.objects(cond & Q(google_status="Removed")).count()
     canceled = Urlstatus.objects(cond & Q(status=None)).count()
     current_month = datetime.now().strftime('/%m/%Y')
-    current_month = datetime.now().strftime('/%m/%Y')
-    monthly_completed = Urlstatus.objects(cond & Q(status__ne="Removed") & (Q(date__contains=current_month))).count()
-    monthly_google_completed = Urlstatus.objects(cond & Q(google_status__ne="Removed") & (Q(date__contains=current_month))).count()
+    requests_monthly = Urlstatus.objects(cond & Q(date__contains=current_month)).count()
+    progress_monthly = Urlstatus.objects(cond & Q(google_status__ne="Removed") & Q(date__contains=current_month)).count()
+    completed_monthly = Urlstatus.objects(cond & Q(google_status="Removed")  & Q(date__contains=current_month)).count()
+    completePct = getPctValue(completed_monthly, requests_monthly)
+    updatingPct = getPctValue(progress_monthly, requests_monthly)
+    livePct = 100 - completePct - updatingPct
+    # monthly_completed = Urlstatus.objects(cond & Q(status__ne="Removed") & (Q(date__contains=current_month))).count()
+    # monthly_google_completed = Urlstatus.objects(cond & Q(google_status__ne="Removed") & (Q(date__contains=current_month))).count()
     topoffender = list(
         Urlstatus.objects().aggregate(
             [
@@ -423,8 +443,11 @@ def progress():
         progress=progress,
         completed=completed,
         canceled=canceled,
-        siteComplete = monthly_completed,
-        googleComplete =monthly_google_completed,
+        completePerMon = completed_monthly,
+        requestPerMon =requests_monthly,
+        livePct = str(livePct)+"%",
+        removedPct = str(completePct)+"%",
+        updatingPct = str(updatingPct)+"%",
         topoffenders=(topoffenders),
         role = role
     )
@@ -751,3 +774,6 @@ Australia
 
     # Return successes and failures
     return successes, failures
+
+def getPctValue(value,total):
+    return math.floor(value *100 /total) 

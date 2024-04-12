@@ -35,8 +35,25 @@
             <li>Total Links Removed:<span>{{completedPerMon}} links</span></li>
             <li>Total Links Submitted<span>{{requestsPerMon}} links</span></li>
         </ul>
+        <p class="top-infringers-header">Pie Chart</p>
         <div class="chart-container">
-            <!-- <img src="C:\PYTHONPROGRAMS\DASHBOARD\templates\pie-chart.png" alt="Pie Chart" class="pie-chart"> -->
+          <div class="piechart" style="--l:{{livePct}};--c:{{removedPct}};--u:{{updatingPct}}">
+            <div class="blank-space"></div>
+            <div class="color-container">
+              <div class="color-board">
+                <div class="color-box  removed-box"></div>
+                <span> Removed {{removedPct}} </span>
+              </div>
+              <div class="color-board">
+                <div class="color-box  live-box"></div>
+                <span> Live {{livePct}} </span>
+              </div>
+              <div class="color-board">
+                <div class="color-box updating-box"></div>
+                <span> Updating {{updatingPct}} </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

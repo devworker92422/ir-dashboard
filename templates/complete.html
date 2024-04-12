@@ -32,11 +32,27 @@
       <div class="top-infringers-container ">
         <div class="top-infringers-header">Monthly Link Status</div>
         <ul class="top-infringers-list">
-            <li>Total Links Removed:<span>{{ siteComplete }} links</span></li>
-            <li>Total Google Removals<span>{{ googleComplete }} links</span></li>
+            <li>Total Links Removed:<span>{{ completePerMon }} links</span></li>
+            <li>Total Links Submitted<span>{{ requestPerMon }} links</span></li>
         </ul>
         <div class="chart-container">
-            <!-- <img src="C:\PYTHONPROGRAMS\DASHBOARD\templates\pie-chart.png" alt="Pie Chart" class="pie-chart"> -->
+          <div class="piechart" style="--l:{{livePct}};--c:{{removedPct}};--u:{{updatingPct}}">
+            <div class="blank-space"></div>
+            <div class="color-container">
+              <div class="color-board">
+                <div class="color-box  removed-box"></div>
+                <span> Removed {{removedPct}} </span>
+              </div>
+              <div class="color-board">
+                <div class="color-box  live-box"></div>
+                <span> Live {{livePct}} </span>
+              </div>
+              <div class="color-board">
+                <div class="color-box updating-box"></div>
+                <span> Updating {{updatingPct}} </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
