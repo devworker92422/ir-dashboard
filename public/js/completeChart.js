@@ -45,9 +45,10 @@ $(document).ready(function () {
     table = $("#example").DataTable({
         dom: "Bfrtip",
         buttons: [
-            { extend: "pageLength", className: "btn btn-primary" },
+            { extend: "pageLength", className: "btn bg-white " },
             {
                 text: "XLSX",
+                className: "btn bg-white"
                 autoFilter: true,
                 action: function (e, dt, node, config) {
                     location.href = "/api/export?" + $.param(dt.ajax.params());

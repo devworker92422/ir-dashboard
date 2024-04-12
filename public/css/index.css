@@ -215,7 +215,7 @@ font-size: 1.1em; /* Increased font size for questions */
   color: #e6ac00;
 }
 a {
-  color: #ffbf00; /* This sets the text color to #ffbf00 */
+  color: black; /* This sets the text color to #ffbf00 */
   text-decoration: none; /* This removes the underline from links */
 }
 
@@ -398,6 +398,9 @@ a:hover {
 }
 .chart-container{
   padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .pieChart {
   width: 100px;
@@ -421,9 +424,9 @@ a:hover {
     left: 25px;
 }
 .color-container{
-  position: absolute;
+  /* position: absolute;
   right: -150px;
-  top: 10px;
+  top: 10px; */
 }
 .color-board{
   display: flex;

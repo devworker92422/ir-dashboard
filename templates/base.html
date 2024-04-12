@@ -31,7 +31,7 @@
   <div class="row" style="height: 100vh;">
     <div id="navbar" class="col-lg-2 col-md-3 sidebar text-center">
       <div class="logo-container">
-          <img src="https://internetremovals.com/wp-content/uploads/2021/03/white-and-yellow-02-600x200.png" alt="Logo">
+        <img src="{{url_for('static',filename='white-and-yellow-02-600x200.png')}}" alt="Logo">
       </div>
       <a href="{{ url_for('results') }}">Dashboard</a>
       <a href="{{ url_for('submit') }}">Requests</a>
@@ -57,7 +57,7 @@
     <div id="mySidenav" class="mobile-sidebar">
       <a href="javascript:void(0)" id="closebtn" class="closebtn">&times;</a>
       <div class="logo-container">
-        <img src="https://internetremovals.com/wp-content/uploads/2021/03/white-and-yellow-02-600x200.png" alt="Logo">
+        <img src="{{url_for('static',filename='white-and-yellow-02-600x200.png')}}" alt="Logo">
       </div>
       <a href="{{ url_for('results') }}">Dashboard</a>
       <a href="{{ url_for('submit') }}">Requests</a>

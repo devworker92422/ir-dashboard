@@ -34,7 +34,7 @@ import pandas as pd
 from io import BytesIO
 from datetime import datetime, timedelta
 import numpy as np
-
+import smtplib, ssl
 # import pdfkit
 
 @login_required
@@ -823,6 +823,27 @@ def updateGoogleStatus():
 @login_required
 def feedback():
     msg = request.form.get('feedback')
-    print(msg)
     
-    return msg
+    context = ssl.create_default_context()
+
+    email_from = 'internetremovalsdmcaagent3@gmail.com'
+    password = 'pnuafzhqygffupxg'
+    email_to = 'team@internetremovals.com'
+    msg_content = '''User {user_email} submitted a feedback.
+                {msg}
+            '''.format(user_email=current_user.email,msg=msg)
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(email_from, password)
+            server.sendmail(email_from, email_to, msg_content)
+            server.close()
+        return True
+    except Exception as e:
+        print('fail')
+        return False
+
+
+
+
+    
+
