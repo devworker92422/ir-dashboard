@@ -32,7 +32,6 @@ function updateGoogleStatus(obj) {
       'status': value,
     }),
     success: function (response) {
-      // Handle successful response
       table.draw(false);
     },
     error: function (xhr, status, error) {
@@ -62,15 +61,21 @@ $(document).ready(function () {
     ajax: {
       url: "/api/urls",
       complete: function (response) {
-        console.log(response);
-        var jsonRes = response.responseJSON
-        var topoffenders = jsonRes['topoffenders'];
+        let jsonRes = response.responseJSON;
+        let requestUrl = jsonRes.recordsTotal;
+        let progressUrl = jsonRes.progressUrl;
+        let completeUrl = jsonRes.completeUrl;
+        let top_list = "";
+        let topoffenders = jsonRes['topoffenders'];
+        $('#requestUrl').text(requestUrl);
+        $('#progressUrl').text(progressUrl);
+        $('#completeUrl').text(completeUrl);
         for (var i = 1; i < 4; i++) {
-          $('#to_' + i).html('');
           if (topoffenders[i - 1]) {
-            $('#to_' + i).html('<span class="text-warning mr-2"><i class="fas fa-arrow-down"></i>' + topoffenders[i - 1]['count'] + '</span><span class="text-nowrap">' + topoffenders[i - 1]['_id'] + '</span>');
+            top_list += '<li>' + topoffenders[i - 1]['_id'] + '<span>' + topoffenders[i - 1]['count'] + 'links</span></li>';
           }
         }
+        $('#top-list').html(top_list);
       },
     },
     rowId: 'id',
@@ -94,7 +99,6 @@ $(document).ready(function () {
         data: "url",
         autoWidth: false,
         width: "250px",
-        className: "aaa",
         render: function (data, type, row) {
           return `<a href="${data}" target="_blank">${data}</a>`;
         },
@@ -188,13 +192,11 @@ $(document).ready(function () {
       // Create the select list and search operation
       var select;
       switch (colIdx) {
-        case 3:
         case 6:
         case 7:
           select = $(`<select class="form-control" id="sel_` + colIdx + `"/>`)
             .appendTo(table.column(colIdx).footer())
             .on("change", function () {
-              console.log($(this).val());
               table.column(colIdx).search($(this).val()).draw();
             });
           break;
@@ -202,14 +204,11 @@ $(document).ready(function () {
 
       // Get the search data for the first column and add to the select list
       switch (colIdx) {
-        case 3:
-          select.append($(`<option value="">Select Profile</option>`));
-          break;
         case 6:
           select.append($(`<option value="">Select Status</option>`));
           select.append($(`<option value="Live">Live</option>`));
           select.append($(`<option value="Removed">Removed</option>`));
-          select.append($(`<option value="Status Updating">Status Updating</option>`));
+          select.append($(`<option value="Status Updating">Updating</option>`));
           break;
         case 7:
           select.append($(`<option value="">Select Google Status</option>`));

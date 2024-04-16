@@ -82,6 +82,37 @@ def urls():
         cond = cond & Q(client_name=client_name_key)
     app.logger.info(cond)
     total = Urlstatus.objects(cond).count()
+    progress = Urlstatus.objects(cond & Q(google_status__ne="Removed")).count()
+    completed = Urlstatus.objects(cond & Q(google_status="Removed")).count()
+    if total < page * limit and total > (page - 1) * limit:
+        limit = int(total - (page - 1) * limit)
+    topoffender = list(
+        Urlstatus.objects(cond).aggregate(
+            [
+                {"$match": {"client_email": searcg_email}},
+                {
+                    "$project": {
+                        "domain": {
+                            "$substr": ["$url", 0, {"$indexOfBytes": ["$url", "/", 8]}]
+                        }
+                    }
+                },
+                {
+                    "$group": {
+                        "_id": "$domain",
+                        "count": {"$count": {}},
+                    }
+                },
+                {"$sort": {"count": -1}},
+                {"$limit": 3},
+            ]
+        )
+    )
+    topoffenders = []
+    for t in topoffender:
+        if t['_id'].find('//')>0:
+            t["_id"] = t["_id"][t["_id"].index("//") + 2 : len(t["_id"])]
+        topoffenders.append(t)
     if total < page * limit and total > (page - 1) * limit:
         limit = int(total - (page - 1) * limit)
     pipeline = [
@@ -118,7 +149,7 @@ def urls():
             ]
         }
     }
-    ] 
+    ]
     result = (Urlstatus.objects(cond).aggregate(pipeline,allowDiskUse=True))
     data = list(result)
     try:
@@ -145,7 +176,10 @@ def urls():
     response = {
         "draw": q.get("draw"),
         "recordsTotal": total,
+        "progressUrl":progress,
+        "completeUrl":completed,
         "recordsFiltered": int(total_count),
+        "topoffenders":topoffenders,
         "data": records,
     }
     return json.dumps(response,default=json_util.default)
@@ -174,9 +208,35 @@ def urls_completed():
         cond = cond & Q(client_name=client_name_key)
     app.logger.info(cond)
     total = Urlstatus.objects(cond).count()
-    current_month = datetime.now().strftime('/%m/%Y')
-    monthly_completed = Urlstatus.objects(cond & Q(status="Removed") & (Q(date__contains=current_month))).count()
-    monthly_google_completed = Urlstatus.objects(cond & Q(google_status="Removed") & (Q(date__contains=current_month))).count()
+    progress = Urlstatus.objects(cond & Q(google_status__ne="Removed")).count()
+    completed = Urlstatus.objects(cond & Q(google_status="Removed")).count()
+    topoffender = list(
+        Urlstatus.objects(cond).aggregate(
+            [
+                {"$match": {"client_email": searcg_email}},
+                {
+                    "$project": {
+                        "domain": {
+                            "$substr": ["$url", 0, {"$indexOfBytes": ["$url", "/", 8]}]
+                        }
+                    }
+                },
+                {
+                    "$group": {
+                        "_id": "$domain",
+                        "count": {"$count": {}},
+                    }
+                },
+                {"$sort": {"count": -1}},
+                {"$limit": 3},
+            ]
+        )
+    )
+    topoffenders = []
+    for t in topoffender:
+        if t['_id'].find('//')>0:
+            t["_id"] = t["_id"][t["_id"].index("//") + 2 : len(t["_id"])]
+        topoffenders.append(t)
     if total < page * limit and total > (page - 1) * limit:
         limit = int(total - (page - 1) * limit)
     pipeline = [
@@ -202,7 +262,6 @@ def urls_completed():
             }
         },
         {"$unwind" : "$url"},
-        
         {"$sort": {field: d}},
         {
             "$facet": {
@@ -217,7 +276,6 @@ def urls_completed():
     ]
     result = (Urlstatus.objects(cond &(Q(status="Removed"))).aggregate(pipeline,allowDiskUse=True))
     data = list(result)
-    print(data[0])
     try:
         total_count = data[0]['totalCount'][0]['count']
     except:
@@ -242,10 +300,11 @@ def urls_completed():
     response = {
         "draw": q.get("draw"),
         "recordsTotal": total,
+        "progressUrl":progress,
+        "completeUrl":completed,
+        "topoffenders":topoffenders,
         "recordsFiltered": int(total_count),
         "data": records,
-        "monthly_completed" : monthly_completed,
-        "monthly_google_completed" : monthly_google_completed,
     }
     return json.dumps(response,default=json_util.default)
 
@@ -273,9 +332,35 @@ def urls_in_progress():
         cond = cond & Q(client_name=client_name_key)
     app.logger.info(cond)
     total = Urlstatus.objects(cond).count()
-    current_month = datetime.now().strftime('/%m/%Y')
-    monthly_completed = Urlstatus.objects(cond & Q(status__ne="Removed") & (Q(date__contains=current_month))).count()
-    monthly_google_completed = Urlstatus.objects(cond & Q(google_status__ne="Removed") & (Q(date__contains=current_month))).count()
+    progress = Urlstatus.objects(cond & Q(google_status__ne="Removed")).count()
+    completed = Urlstatus.objects(cond & Q(google_status="Removed")).count()
+    topoffender = list(
+        Urlstatus.objects(cond).aggregate(
+            [
+                {"$match": {"client_email": searcg_email}},
+                {
+                    "$project": {
+                        "domain": {
+                            "$substr": ["$url", 0, {"$indexOfBytes": ["$url", "/", 8]}]
+                        }
+                    }
+                },
+                {
+                    "$group": {
+                        "_id": "$domain",
+                        "count": {"$count": {}},
+                    }
+                },
+                {"$sort": {"count": -1}},
+                {"$limit": 3},
+            ]
+        )
+    )
+    topoffenders = []
+    for t in topoffender:
+        if t['_id'].find('//')>0:
+            t["_id"] = t["_id"][t["_id"].index("//") + 2 : len(t["_id"])]
+        topoffenders.append(t)
     if total < page * limit and total > (page - 1) * limit:
         limit = int(total - (page - 1) * limit)
     pipeline = [
@@ -315,7 +400,6 @@ def urls_in_progress():
     ]   
     result = (Urlstatus.objects(cond &(Q(status__ne="Removed"))).aggregate(pipeline,allowDiskUse=True))
     data = list(result)
-    print(data[0])
     try:
         total_count = data[0]['totalCount'][0]['count']
     except:
@@ -340,10 +424,11 @@ def urls_in_progress():
     response = {
         "draw": q.get("draw"),
         "recordsTotal": total,
+        "progressUrl":progress,
+        "completeUrl":completed,
+        "topoffenders":topoffenders,
         "recordsFiltered": int(total_count),
         "data": records,
-        "monthly_progress" : monthly_completed,
-        "monthly_google_progress" : monthly_google_completed,
     }
     return json.dumps(response,default=json_util.default)
 
@@ -435,8 +520,6 @@ def getStaffData():
     view_mode = int(q.get("display"))
     date_range = int(q.get("dateRange"))
 
-    print(view_mode,page, limit)
-
     if(date_range == 0):
         start_date = datetime(2000,1,1)
         end_date = datetime(9999,12,31)
@@ -460,7 +543,6 @@ def getStaffData():
 
     # params=json.loads(request.data)
     # view_mode=int(params['mode']) 
-    print(start_date, end_date)
     role=current_user.role
     allStaff= [
                 {"$match": 
@@ -616,7 +698,6 @@ def getStaffData():
     if(view_mode == 1):
         for item in staff_data:
             index = staff_data.index(item)
-            print(index)
             if(index < page*limit and index >= (page-1)*limit):
                 if(search_key in item['_id'].lower() or search_key == ""):
                     invoice_pipeline = [
@@ -661,7 +742,6 @@ def getStaffData():
                     except:
                         staff_name = ''
                     staff_first_name = staff_dict[staff_name]
-                    print(staff_first_name)
                     invoice_pipeline = [
                         {"$match": {
                             "$and" : [
@@ -693,7 +773,6 @@ def getStaffData():
 
                         'payments_collected' : total_payment,
                     })
-    print(results)
 
     response = {
         "draw": q.get("draw"),
@@ -839,7 +918,6 @@ def feedback():
             server.close()
         return True
     except Exception as e:
-        print('fail')
         return False
 
 

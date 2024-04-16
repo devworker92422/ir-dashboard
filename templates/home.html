@@ -15,15 +15,15 @@
 <div class="dashboard">
   <div class="dashboard-header">
     <div class="stat">
-      <h1>{{ requests }}</h1>
+      <h1 id="requestUrl">{{ requests }}</h1>
       <p>Requests</p>
     </div>
     <div class="stat">
-      <h1>{{ progress }}</h1>
+      <h1 id="progressUrl">{{ progress }}</h1>
       <p>In Progress</p>
     </div>
     <div class="stat">
-      <h1>{{ completed }}</h1>
+      <h1 id="completeUrl">{{ completed }}</h1>
       <p>Completed</p>
     </div>
   </div>
@@ -37,7 +37,7 @@
         </ul>
         <p class="top-infringers-header">Pie Chart</p>
         <div class="chart-container">
-          <div class="piechart" style="--l:{{livePct}};--c:{{removedPct}};--u:{{updatingPct}}">
+          <div class="piechart" style="--l:{{livePct}};--c:{{removedPct}};--u:{{updatingPiePct}}">
             <div class="blank-space"></div>
           </div>
           <div class="color-container">
@@ -60,7 +60,7 @@
     <div class="col-md-6 col-lg-6 infringers-element">
       <div class="top-infringers-container ">
         <div class="top-infringers-header">Top Infringers</div>
-          <ul class="top-infringers-list">
+          <ul class="top-infringers-list" id="top-list">
             {% for t in topoffenders %}
                 <li> {{t._id}} <span> {{t.count}} links</span></li>
             {% endfor %}
@@ -70,7 +70,7 @@
     
   </div>
   <div class="container-fluid">
-    <div class="overflow-auto">
+    <div class="">
       <table id="example" class="table table-bordered table-stripe table-hover table-compact bg-white" style="width:100%">
         <thead>
           <tr class="th-bg-color">

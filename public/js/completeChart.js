@@ -62,15 +62,21 @@ $(document).ready(function () {
         ajax: {
             url: "/api/completeUrl",
             complete: function (response) {
-                console.log(response);
-                var jsonRes = response.responseJSON
-                var topoffenders = jsonRes['topoffenders'];
+                let jsonRes = response.responseJSON;
+                let requestUrl = jsonRes.recordsTotal;
+                let progressUrl = jsonRes.progressUrl;
+                let completeUrl = jsonRes.completeUrl;
+                let top_list = "";
+                let topoffenders = jsonRes['topoffenders'];
+                $('#requestUrl').text(requestUrl);
+                $('#progressUrl').text(progressUrl);
+                $('#completeUrl').text(completeUrl);
                 for (var i = 1; i < 4; i++) {
-                    $('#to_' + i).html('');
                     if (topoffenders[i - 1]) {
-                        $('#to_' + i).html('<span class="text-warning mr-2"><i class="fas fa-arrow-down"></i>' + topoffenders[i - 1]['count'] + '</span><span class="text-nowrap">' + topoffenders[i - 1]['_id'] + '</span>');
+                        top_list += '<li>' + topoffenders[i - 1]['_id'] + '<span>' + topoffenders[i - 1]['count'] + 'links</span></li>';
                     }
                 }
+                $('#top-list').html(top_list);
             },
         },
         rowId: 'id',
