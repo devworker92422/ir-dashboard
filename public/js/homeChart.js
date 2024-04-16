@@ -42,6 +42,7 @@ function updateGoogleStatus(obj) {
 }
 $(document).ready(function () {
   table = $("#example").DataTable({
+    scrollX: false,
     dom: "Bfrtip",
     buttons: [
       { extend: "pageLength", className: "btn bg-white" },
@@ -97,8 +98,6 @@ $(document).ready(function () {
       {
         name: "url",
         data: "url",
-        autoWidth: false,
-        width: "250px",
         render: function (data, type, row) {
           return `<a href="${data}" target="_blank">${data}</a>`;
         },
