@@ -12,23 +12,24 @@
     <div class="form-container">
       <h2>Submit URLs</h2>
       <p>Use this text box to enter a list of URLs for our team to work on</p>
+      <form id="submit_urls_form" method="post">
+        <div class="form-group">
+            <label for="email" class="form-label">Your Email:</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="Please enter your email">
+        </div>
+        
+        <div class="form-group">
+            <label for="name" class="form-label">Your Username/Creator Name/Business Name:</label>
+            <input type="text" id="username" name="username"  class="form-input" placeholder="Please enter your Username/Creator Name/Business Name">
+        </div>
+        
+        <div class="form-group">
+            <label for="urls" class="form-label">URLs:</label>
+            <textarea name="url_input" id="url_input" class="form-textarea" placeholder="Enter URLs"></textarea>
+        </div>
       
-      <div class="form-group">
-          <label for="email" class="form-label">Your Email:</label>
-          <input type="email" id="email" name="email" class="form-input" placeholder="Please enter your email">
-      </div>
-      
-      <div class="form-group">
-          <label for="name" class="form-label">Your Username/Creator Name/Business Name:</label>
-          <input type="text" id="username" name="username"  class="form-input" placeholder="Please enter your Username/Creator Name/Business Name">
-      </div>
-      
-      <div class="form-group">
-          <label for="urls" class="form-label">URLs:</label>
-          <textarea name="url_input" id="url_input" class="form-textarea" placeholder="Enter URLs"></textarea>
-      </div>
-      
-      <button type="submit" class="btn-submit">Submit</button>
+        <button type="submit" class="btn-submit">Submit</button>
+     </form>
     </div>
   </div>
 {% endblock %}
